@@ -8,7 +8,9 @@ var { AppRegistry, Text, View, StyleSheet, TouchableHighlight } = React;
 var StopWatch = React.createClass({
   getInitialState: function() {
     return {
-      timeElapsed: null
+      timeElapsed: null,
+      startTime: null,
+      running: false
     };
   },
   render: function() {
@@ -31,14 +33,16 @@ var StopWatch = React.createClass({
     );
   },
   startStopButton: function() {
+    var style = !this.state.running ? styles.startButton : styles.stopButton;
+
     return (
       <TouchableHighlight
         underlayColor="gray"
         onPress={this.handleStartPress}
-        style={[styles.button, styles.startBUtton]}
+        style={[styles.button, style]}
       >
         <Text>
-          Start
+          { !this.state.running ? 'Start' : 'Stop' }
         </Text>
       </TouchableHighlight>
     );
@@ -53,10 +57,22 @@ var StopWatch = React.createClass({
     );
   },
   handleStartPress: function() {
-    var startTime = new Date();
-    setInterval(() => {
+    if(this.state.running) {
+      clearInterval(this.interval);
       this.setState({
-        timeElapsed: new Date() - startTime
+        running: false
+      });
+      return;
+    }
+
+    this.setState({ 
+      startTime: new Date() 
+    });
+    
+    this.interval = setInterval(() => {
+      this.setState({
+        timeElapsed: new Date() - this.state.startTime,
+        running: true
       });
     }, 30);
   }
@@ -95,8 +111,11 @@ var styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  startBUtton: {
+  startButton: {
     borderColor: '#00CC00'
+  },
+  stopButton: {
+    borderColor: '#CC0000'
   }
 });
 

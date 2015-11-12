@@ -16,7 +16,7 @@ var StopWatch = React.createClass({
       <View style={styles.container}>
         <View style={[styles.header, this.border('yellow')]} /* yellow */ >
           <View  style={[this.border('red'), styles.timerWrapper]} /* red */ >
-            <Text> {formatTime(this.state.timeElapsed)} </Text>
+            <Text style={styles.timer}> {formatTime(this.state.timeElapsed)} </Text>
           </View>
           <View style={[this.border('green'), styles.buttonWrapper]} /* green */ >
             {this.startStopButton()}
@@ -35,11 +35,21 @@ var StopWatch = React.createClass({
       <TouchableHighlight
         underlayColor="gray"
         onPress={this.handleStartPress}
+        style={[styles.button, styles.startBUtton]}
       >
         <Text>
           Start
         </Text>
       </TouchableHighlight>
+    );
+  },
+  lapButton: function() {
+    return (
+      <View style={styles.button}>
+        <Text>
+          Lap
+        </Text>
+      </View>
     );
   },
   handleStartPress: function() {
@@ -49,15 +59,6 @@ var StopWatch = React.createClass({
         timeElapsed: new Date() - startTime
       });
     }, 30);
-  },
-  lapButton: function() {
-    return (
-      <View>
-        <Text>
-          Lap
-        </Text>
-      </View>
-    );
   },
   border: function(color) {
     return {
@@ -88,6 +89,20 @@ var styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center'
+  },
+  timer: {
+    fontSize: 60
+  },
+  button: {
+    borderWidth: 2,
+    height: 100,
+    width: 100,
+    borderRadius: 50,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  startBUtton: {
+    borderColor: '#00CC00'
   }
 });
 
